@@ -10,9 +10,9 @@ FRAME_SIZE = (640, 480)
 def getCapture( source ):
     capture = cv2.VideoCapture( source )
 
-    capture.set(cv2.CAP_PROP_FPS, 30.0)
-    capture.set(cv2.CAP_PROP_FRAME_WIDTH, FRAME_SIZE[0])
-    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_SIZE[1])
+    #capture.set(cv2.CAP_PROP_FPS, 30.0)
+    #capture.set(cv2.CAP_PROP_FRAME_WIDTH, FRAME_SIZE[0])
+    #capture.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_SIZE[1])
 
     width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -31,13 +31,14 @@ def getFrame( cap ):
 
 def showFrame( frame ):
     frame = cv2.resize(frame, (FRAME_SIZE), interpolation=cv2.INTER_LANCZOS4)
+    #frame = cv2.flip(frame,1)
     cv2.imshow('img',frame)
 
 
 def main():
 
-    #cap = getCapture("temp/examaple.mp4")
-    cap = getCapture(2)
+    cap = getCapture("temp/examaple.mp4")
+    #cap = getCapture(2)
 
     detection = fm.FaceMesh()
 
@@ -47,9 +48,12 @@ def main():
 
         detection.detect(frame)
 
-        detection.drawMask(frame)
+        #detection.drawMask(frame)
 
-        frame = cv2.flip(frame,1)
+        detection.drawPoint(frame, 468)
+        detection.drawPoint(frame, 33)
+        detection.drawPoint(frame, 133)
+
         
         showFrame(frame)
 

@@ -25,7 +25,15 @@ class FaceMesh:
 
         self.result = self.face_mesh.process(image)
         
-        
+    
+    def drawPoint(self, image, point):
+
+        coo = self.result.multi_face_landmarks[0].landmark[point]
+
+        point = (int(coo.x * image.shape[1]), int(coo.y * image.shape[0]))
+
+        cv2.circle(image, point, 0, (255,0,0), 5)
+
 
     def drawMask(self, image):
         #image.flags.writeable = True
