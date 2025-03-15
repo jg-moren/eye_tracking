@@ -10,16 +10,6 @@ class dot:
             self.x = p.x
             self.y = p.y
 
-#
-#   [a,b] * [c,d] = [a*c+b*e, a*d+b*f]
-#           [e,f]
-#
-    def rot(self, sin, cos):
-        x = self.x*cos+self.y*(-sin)
-        y = self.x*sin+self.y*cos
-        self.x = x
-        self.y = y
-
     def __mul__(self, p):
         r = dot((self.x,self.y))
         if( isinstance(p,dot)):
@@ -59,6 +49,16 @@ class dot:
             r.y += p
         return r
 
+#
+#   [a,b] * [c,d] = [a*c+b*e, a*d+b*f]
+#           [e,f]
+#
+    def rot(self, sin, cos):
+        x = self.x*cos+self.y*(sin)
+        y = self.x*(-sin)+self.y*cos
+        self.x = x
+        self.y = y
+
     def get(self):
         return (int(self.x), int(self.y))
 
@@ -72,28 +72,35 @@ def normalize( a, b, x ):
     p2 = dot(b)
     p3 = dot(x)
 
-    co = abs(p1.x - p2.x)
-    ca = abs(p1.y - p2.y)
+    co = (p1.x - p2.x)
+    ca = (p1.y - p2.y)
     hi = dist(p1,p2)
     cos = (co)/(hi)
     sin = (ca)/(hi)
 
-    print(cos)
-    print(sin)
-
     d = p1-p2
 
-    d.rot(-sin,-cos)
+    d.rot(sin,cos)
 
     p2 = p1+d
 
     d = p1-p3
 
-    d.rot(-sin,-cos)
+    d.rot(sin,cos)
 
     p3 = p1+d
 
-    print(f"{p2.x},{p2.y}")
+    #print(f"{p2.x},{p2.y}")
+
+    p2 = (p2 - p1)
+    p3 = (p3 - p1)
+    p1 = (p1 - p1)
+
+    es = 1 / p2.x
+
+    p1 = p1 * es
+    p2 = p2 * es
+    p3 = p3 * es
 
     return p1,p2,p3
 
