@@ -16,23 +16,34 @@ class FaceMesh:
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5)
         
-        self.result = []
-
+        self.result = False
 
     def detect(self, image):
 
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        self.result = self.face_mesh.process(image)
+        res = self.face_mesh.process(image)
+
+        if res.multi_face_landmarks:
+            self.result = res 
+        
         
     
     def drawPoint(self, image, point):
+        if not self.result:
+            return
+
 
         coo = self.result.multi_face_landmarks[0].landmark[point]
 
         point = (int(coo.x * image.shape[1]), int(coo.y * image.shape[0]))
 
         cv2.circle(image, point, 0, (255,0,0), 5)
+
+    def getPoint(self, point):
+        if not self.result:
+            return (0,0)
+        return self.result.multi_face_landmarks[0].landmark[point]
 
 
     def drawMask(self, image):
