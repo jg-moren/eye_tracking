@@ -48,6 +48,19 @@ class dot:
             r.x += p
             r.y += p
         return r
+    
+    def __truediv__(self, p):
+        r = dot((self.x,self.y))
+        if( isinstance(p,dot)):
+            r.x /= p.x
+            r.y /= p.y
+        elif( isinstance(p, tuple)):
+            r.x /= p[0]
+            r.y /= p[1]
+        else:
+            r.x /= p
+            r.y /= p
+        return r
 
 #
 #   [a,b] * [c,d] = [a*c+b*e, a*d+b*f]
@@ -71,6 +84,7 @@ def normalize( a, b, x ):
     p1 = dot(a)
     p2 = dot(b)
     p3 = dot(x)
+    p4 = (p1+p2) / 2 
 
     co = (p1.x - p2.x)
     ca = (p1.y - p2.y)
@@ -78,31 +92,33 @@ def normalize( a, b, x ):
     cos = (co)/(hi)
     sin = (ca)/(hi)
 
-    d = p1-p2
+    #d = p1-p2
 
-    d.rot(sin,cos)
+    #d.rot(sin,cos)
 
-    p2 = p1+d
+    #p2 = p1+d
 
-    d = p1-p3
+    #d = p1-p3
 
-    d.rot(sin,cos)
+    #d.rot(sin,cos)
 
-    p3 = p1+d
+    #p3 = p1+d
 
     #print(f"{p2.x},{p2.y}")
 
-    p2 = (p2 - p1)
-    p3 = (p3 - p1)
-    p1 = (p1 - p1)
+    p1 = (p1 - p4)
+    p2 = (p2 - p4)
+    p3 = (p3 - p4)
+    p4 = (p4 - p4)
 
-    es = 1 / p2.x
+    es = 1 / dist(p1,p2)
 
     p1 = p1 * es
     p2 = p2 * es
     p3 = p3 * es
+    p4 = p4 * es
 
-    return p1,p2,p3
+    return p1,p4,p3
 
 
     

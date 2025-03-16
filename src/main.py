@@ -15,7 +15,15 @@ def getEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil ):
 
     #print(eye_pupil.z)
 
-    _,_,eye_center = mat.normalize(eye_in,eye_out,eye_pupil)
+    e1,e2,eye_center = mat.normalize(eye_in,eye_out,eye_pupil)
+
+    #print((e1*200).get(),(e2*200).get(),(eye_center*200).get())
+
+    #cv2.circle(frame, (e1*200+100).get(), 0, (255,0,0), 2)#blue
+    #cv2.circle(frame, (e2*200+100).get(), 0, (0,255,0), 2)#green
+    #cv2.circle(frame, (eye_center*200+100).get(), 0, (0,0,255), 2)#red
+
+
 
     return eye_center
 
@@ -38,10 +46,12 @@ def main():
 
         eye_left_center *= 200
         eye_left_center.y += 100
+        eye_left_center.x += 100
+        
 
         eye_right_center *= 200
         eye_right_center.y += 100
-        eye_right_center.x += 200
+        eye_right_center.x += 300
 
 
         cv2.rectangle(frame, (0,0), (200,200), (255,255,255), -1)
