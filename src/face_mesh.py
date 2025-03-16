@@ -9,7 +9,6 @@ class FaceMesh:
 
     def __init__(self):
 
-
         self.face_mesh = mp_face_mesh.FaceMesh(
             max_num_faces=1,
             refine_landmarks=True,
@@ -27,18 +26,17 @@ class FaceMesh:
         if res.multi_face_landmarks:
             self.result = res 
         
-        
     
     def drawPoint(self, image, point):
+
         if not self.result:
             return
-
 
         coo = self.result.multi_face_landmarks[0].landmark[point]
 
         point = (int(coo.x * image.shape[1]), int(coo.y * image.shape[0]))
 
-        cv2.circle(image, point, 0, (255,0,0), 5)
+        cv2.circle(image, point, 0, (0,255,0), 2)
 
     def getPoint(self, point):
         if not self.result:
@@ -48,20 +46,25 @@ class FaceMesh:
 
     def drawMask(self, image):
         #image.flags.writeable = True
+
+        if not self.result:
+            return 
         
         if self.result.multi_face_landmarks:
             for face_landmarks in self.result.multi_face_landmarks:
                 con = frozenset().union(*[
                     mp_face_mesh.FACEMESH_RIGHT_IRIS, 
                     mp_face_mesh.FACEMESH_LEFT_IRIS,
-                    mp_face_mesh.FACEMESH_RIGHT_EYE,
-                    mp_face_mesh.FACEMESH_LEFT_EYE
+                    #mp_face_mesh.FACEMESH_RIGHT_EYE,
+                    #mp_face_mesh.FACEMESH_LEFT_EYE
                 ])
                 mp_drawing.draw_landmarks(
                     image=image,
                     landmark_list=face_landmarks,
                     connections=con,#mp_face_mesh.FACEMESH_RIGHT_IRIS,
-                    landmark_drawing_spec=None
+                    landmark_drawing_spec=None,
+                    connection_drawing_spec=mp.solutions.drawing_styles
+                    .get_default_face_mesh_tesselation_style()
                 )
         return image
        
