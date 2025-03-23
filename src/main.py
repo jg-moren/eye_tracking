@@ -2,7 +2,7 @@ import face_mesh as fm
 import video
 import mat
 import cv2
-
+import screen
 
 def getEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil ):
     detection.drawPoint(frame, num_eye_in)
@@ -33,10 +33,12 @@ def main():
     cap = video.Video("temp/examaple.mp4")
     #cap = video.Video(2)
     detection = fm.FaceMesh()
+    monitor = screen.Screen()
 
     while( cap.isOpened() ):
         
         frame = cap.getFrame()
+
 
         detection.detect(frame)
 
@@ -66,8 +68,8 @@ def main():
         cv2.circle(frame, eye_right_center.get(), 0, (255,0,0), 40)
 
         
-        video.showFrame(frame)
-
+        #video.showFrame(frame)
+        video.showFrame(monitor.getScreen())
 
         if ( cv2.waitKey(5) & 0xFF == ord('q') ):
             cap.release()
