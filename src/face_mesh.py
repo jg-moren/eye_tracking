@@ -44,7 +44,7 @@ class FaceMesh:
         return self.result.multi_face_landmarks[0].landmark[point]
 
 
-    def drawMask(self, image):
+    def drawEyeMask(self, image):
         #image.flags.writeable = True
 
         if not self.result:
@@ -67,4 +67,24 @@ class FaceMesh:
                     .get_default_face_mesh_tesselation_style()
                 )
         return image
-       
+
+
+    def drawMask(self, image):
+        #image.flags.writeable = True
+
+        if not self.result:
+            return 
+        
+        if self.result.multi_face_landmarks:
+            for face_landmarks in self.result.multi_face_landmarks:
+                mp_drawing.draw_landmarks(
+                    image=image,
+                    landmark_list=face_landmarks,
+                    connections=mp_face_mesh.FACEMESH_TESSELATION,
+                    landmark_drawing_spec=None,
+                    connection_drawing_spec=mp.solutions.drawing_styles
+                    .get_default_face_mesh_tesselation_style()
+                )
+        return image
+    
+              

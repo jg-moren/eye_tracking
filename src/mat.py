@@ -86,26 +86,6 @@ def normalize( a, b, x ):
     p3 = dot(x)
     p4 = (p1+p2) / 2 
 
-    co = (p1.x - p2.x)
-    ca = (p1.y - p2.y)
-    hi = dist(p1,p2)
-    cos = (co)/(hi)
-    sin = (ca)/(hi)
-
-    #d = p1-p2
-
-    #d.rot(sin,cos)
-
-    #p2 = p1+d
-
-    #d = p1-p3
-
-    #d.rot(sin,cos)
-
-    #p3 = p1+d
-
-    #print(f"{p2.x},{p2.y}")
-
     p1 = (p1 - p4)
     p2 = (p2 - p4)
     p3 = (p3 - p4)

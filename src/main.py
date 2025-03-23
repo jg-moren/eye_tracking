@@ -8,7 +8,7 @@ def getEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil ):
     detection.drawPoint(frame, num_eye_in)
     detection.drawPoint(frame, num_eye_out)
     detection.drawPoint(frame, num_eye_pupil)
-    
+
     eye_in = detection.getPoint(num_eye_in)
     eye_out = detection.getPoint(num_eye_out)
     eye_pupil = detection.getPoint(num_eye_pupil)
@@ -29,8 +29,9 @@ def getEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil ):
 
 def main():
 
-    #cap = video.Video("temp/examaple.mp4")
-    cap = video.Video(2)
+    #cap = video.Video("temp/p.ogg")
+    cap = video.Video("temp/examaple.mp4")
+    #cap = video.Video(2)
     detection = fm.FaceMesh()
 
     while( cap.isOpened() ):
@@ -38,6 +39,8 @@ def main():
         frame = cap.getFrame()
 
         detection.detect(frame)
+
+        #detection.drawEyeMask(frame)
 
         detection.drawMask(frame)
 
@@ -47,8 +50,7 @@ def main():
         eye_left_center *= 200
         eye_left_center.y += 100
         eye_left_center.x += 100
-        
-
+    
         eye_right_center *= 200
         eye_right_center.y += 100
         eye_right_center.x += 300

@@ -27,7 +27,8 @@ class Video:
 
     def getFrame( self ):
         ok, frame = self.capture.read()
-        frame = cv2.resize(frame, (FRAME_SIZE), interpolation=cv2.INTER_LANCZOS4)
+        #frame = frame[0:int(frame.shape[0]*0.5),int(frame.shape[1]*0.3):int(frame.shape[1]*0.7) ]
+        #frame = cv2.resize(frame, (FRAME_SIZE), interpolation=cv2.INTER_LANCZOS4)
         return frame    
 
     
