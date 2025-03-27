@@ -3,6 +3,7 @@ import video
 import mat
 import cv2
 import screen
+import mouse
 
 def getEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil ):
     detection.drawPoint(frame, num_eye_in)
@@ -30,10 +31,12 @@ def getEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil ):
 def main():
 
     #cap = video.Video("temp/p.ogg")
-    cap = video.Video("temp/examaple.mp4")
-    #cap = video.Video(2)
+    #cap = video.Video("temp/examaple.mp4")
+    cap = video.Video(0)
     detection = fm.FaceMesh()
     monitor = screen.Screen()
+
+    m = mouse.Mouse()
 
     while( cap.isOpened() ):
         
@@ -45,6 +48,8 @@ def main():
         #detection.drawEyeMask(frame)
 
         detection.drawMask(frame)
+        
+        m.moveTo(detection.getPoint(33))
 
         eye_left_center = getEye(detection, frame, 33, 133, 468)
         eye_right_center = getEye(detection, frame, 463, 263, 473)
@@ -68,8 +73,8 @@ def main():
         cv2.circle(frame, eye_right_center.get(), 0, (255,0,0), 40)
 
         
-        #video.showFrame(frame)
-        video.showFrame(monitor.getScreen())
+        video.showFrame(frame)
+        #video.showFrame(monitor.getScreen())
 
         if ( cv2.waitKey(5) & 0xFF == ord('q') ):
             cap.release()
