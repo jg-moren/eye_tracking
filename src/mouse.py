@@ -16,6 +16,9 @@ class Mouse:
     def moveTo(self,p):
         if( p == (0,0) ):
             return
+        
+        if (p.x < 0 or 1 < p.x) or (p.y < 0 or 1 < p.y):
+            return
         x = int((1-p.x)*self.screenWight)
         y = int(p.y*self.screenHeight)
         point = mat.dot((x,y))

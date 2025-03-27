@@ -18,6 +18,8 @@ def drawEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil, move):
 
     e1,e2,eye_center = mat.normalize(eye_in,eye_out,eye_pupil)
 
+    res = eye_center
+
 
     eye_center *= 200
     eye_center.y += 100
@@ -40,7 +42,22 @@ def drawEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil, move):
 
 
 
-    return eye_center
+    return mat.dot(res)
+
+def getProporcion(detection, frame, n, s, w, e):
+
+    detection.drawPoint(frame, n)
+    detection.drawPoint(frame, s)
+    detection.drawPoint(frame, w)
+    detection.drawPoint(frame, e)
+    pointN = detection.getPoint(n)
+    pointS = detection.getPoint(s)
+    pointW = detection.getPoint(w)
+    pointE = detection.getPoint(e)
+
+    #print( mat.dist(pointN, pointS) )
+    #print( mat.dist(pointW, pointE) )
+
 
 def main():
 
@@ -62,14 +79,21 @@ def main():
         #detection.drawEyeMask(frame)
 
         detection.drawMask(frame)
-        
 
         eye_left_center = drawEye(detection, frame, 33, 133, 468,0)
         eye_right_center = drawEye(detection, frame, 463, 263, 473,200)
+        nose = mat.dot(detection.getPoint(4))
+
+        de = ((eye_right_center - mat.dot((0.1,0))) * mat.dot((3,0)))
+
+        view = nose + de
+
+        print((nose*100).get(), (de*100).get())
 
 
-        m.moveTo(detection.getPoint(4))#nose
+        #getProporcion(detection, frame, 10, 9, 108, 337)
 
+        m.moveTo(view)#nose
         
         video.showFrame(frame)
         #video.showFrame(monitor.getScreen())
