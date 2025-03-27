@@ -1,14 +1,28 @@
 import pyautogui
+import numpy as np
+import mat
 
 class Mouse:
 
     def __init__(self):
-        self.screenW = 1024
-        self.screenH = 1024
+
+        img = pyautogui.screenshot()
+        frame = np.array(img)
+        self.screenHeight = frame.shape[0]
+        self.screenWight = int(frame.shape[1]/2)
+
+        self.mouse = mat.dot(pyautogui.position() )
     
     def moveTo(self,p):
-        x = p.x
-        y = p.y
-        x = int(x*self.screenW)
-        y = int(y*self.screenH)
-        pyautogui.moveTo(x,y)
+        if( p == (0,0) ):
+            return
+        x = int((1-p.x)*self.screenWight)
+        y = int(p.y*self.screenHeight)
+        point = mat.dot((x,y))
+
+
+        #print(point.get())
+
+        if( mat.dist(point, self.mouse) >= 3 ):
+            pyautogui.moveTo(point.x,point.y,0)
+            self.mouse = point

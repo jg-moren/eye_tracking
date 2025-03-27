@@ -5,7 +5,8 @@ import cv2
 import screen
 import mouse
 
-def getEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil ):
+def drawEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil, move):
+
     detection.drawPoint(frame, num_eye_in)
     detection.drawPoint(frame, num_eye_out)
     detection.drawPoint(frame, num_eye_pupil)
@@ -14,9 +15,22 @@ def getEye( detection, frame, num_eye_in, num_eye_out, num_eye_pupil ):
     eye_out = detection.getPoint(num_eye_out)
     eye_pupil = detection.getPoint(num_eye_pupil)
 
-    #print(eye_pupil.z)
 
     e1,e2,eye_center = mat.normalize(eye_in,eye_out,eye_pupil)
+
+
+    eye_center *= 200
+    eye_center.y += 100
+    eye_center.x += 100 + move
+
+
+    cv2.rectangle(frame, (move,0), (200+move,200), (255,255,255), -1)
+    cv2.rectangle(frame, (move,0), (200+move,200), (0,0,0), 1)
+
+    cv2.circle(frame, eye_center.get(), 0, (255,0,0), 40)
+
+    #print(eye_pupil.z)
+
 
     #print((e1*200).get(),(e2*200).get(),(eye_center*200).get())
 
@@ -32,7 +46,7 @@ def main():
 
     #cap = video.Video("temp/p.ogg")
     #cap = video.Video("temp/examaple.mp4")
-    cap = video.Video(0)
+    cap = video.Video(2)
     detection = fm.FaceMesh()
     monitor = screen.Screen()
 
@@ -49,28 +63,12 @@ def main():
 
         detection.drawMask(frame)
         
-        m.moveTo(detection.getPoint(33))
 
-        eye_left_center = getEye(detection, frame, 33, 133, 468)
-        eye_right_center = getEye(detection, frame, 463, 263, 473)
-
-        eye_left_center *= 200
-        eye_left_center.y += 100
-        eye_left_center.x += 100
-    
-        eye_right_center *= 200
-        eye_right_center.y += 100
-        eye_right_center.x += 300
+        eye_left_center = drawEye(detection, frame, 33, 133, 468,0)
+        eye_right_center = drawEye(detection, frame, 463, 263, 473,200)
 
 
-        cv2.rectangle(frame, (0,0), (200,200), (255,255,255), -1)
-        cv2.rectangle(frame, (0,0), (200,200), (0,0,0), 1)
-
-        cv2.rectangle(frame, (200,0), (400,200), (255,255,255), -1)
-        cv2.rectangle(frame, (200,0), (400,200), (0,0,0), 1)
-        
-        cv2.circle(frame, eye_left_center.get(), 0, (255,0,0), 40)
-        cv2.circle(frame, eye_right_center.get(), 0, (255,0,0), 40)
+        m.moveTo(detection.getPoint(4))#nose
 
         
         video.showFrame(frame)
